@@ -1,52 +1,28 @@
 word2num = {
-    "one": 1,
-    "two": 2,
-    "three": 3,
-    "four": 4,
-    "five": 5,
-    "six": 6,
-    "seven": 7,
-    "eight": 8,
-    "nine": 9,
+    "one": "one1one",
+    "two": "two2two",
+    "three": "three3three",
+    "four": "four4four",
+    "five": "five5five",
+    "six": "six6six",
+    "seven": "seven7seven",
+    "eight": "eight8eight",
+    "nine": "nine9nine",
 }
 
+
+def get_first_digit(s: str) -> int:
+	for c in s:
+		if c.isdigit():
+			return int(c)
+	raise ValueError(f"No digits in string {s}")
+
+
+def get_cal_value(s: str) -> int:
+	for k, v in word2num.items():
+		s = s.replace(k, v)
+	return get_first_digit(s) * 10 + get_first_digit(s[::-1])
+
+
 with open("input.txt", "r") as f:
-	data = f.read().splitlines()
-
-total = 0
-for line in data:
-	n = 0
-	numids = {9999999: -14}
-	for k, v in word2num.items():
-		if k in line:
-			numids[line.index(k)] = v
-	nid = min(numids.keys())
-	nv = numids[nid]
-	flag = False
-	for i, c in enumerate(line):
-		if c.isdigit():
-			if i < nid:
-				flag = True
-				n += int(c) * 10
-			break
-	if not flag:
-		n += nv * 10
-
-	line = "".join(reversed(line))
-	numids = {999999: -14}
-	for k, v in word2num.items():
-		if "".join(reversed(k)) in line:
-			numids[line.index("".join(reversed(k)))] = v
-	nid = min(numids.keys())
-	nv = numids[nid]
-	flag = False
-	for i, c in enumerate(line):
-		if c.isdigit():
-			if i < nid:
-				n += int(c)
-				flag = True
-			break
-	if not flag:
-		n += nv
-	total += n
-print(total)
+	print(sum([get_cal_value(l) for l in f]))

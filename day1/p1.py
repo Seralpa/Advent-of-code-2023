@@ -1,16 +1,13 @@
-with open("input.txt", "r") as f:
-	data = f.read().splitlines()
+def get_first_digit(s: str) -> int:
+	for c in s:
+		if c.isdigit():
+			return int(c)
+	raise ValueError(f"No digits in string {s}")
 
-total = 0
-for line in data:
-	n = 0
-	for c in line:
-		if c.isdigit():
-			n += int(c) * 10
-			break
-	for c in reversed(line):
-		if c.isdigit():
-			n += int(c)
-			break
-	total += n
-print(total)
+
+def get_cal_value(s: str) -> int:
+	return get_first_digit(s) * 10 + get_first_digit(s[::-1])
+
+
+with open("input.txt", "r") as f:
+	print(sum([get_cal_value(l) for l in f]))
