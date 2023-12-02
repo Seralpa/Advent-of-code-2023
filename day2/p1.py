@@ -15,19 +15,17 @@ max_vals = {
     "blue": 14,
 }
 
-cwd = os.path.dirname(os.path.abspath(__file__))
-with open(f"{cwd}/input.txt") as f:
-	data = [l.split(": ")[1].split("; ") for l in f.read().splitlines()]
 
-total = 0
-for i, g in enumerate(data):
-	g_dict = [create_dict(pull) for pull in g]
-	valid = True
-	for pull in g_dict:
+def is_valid(game: list[dict[str, int]]) -> bool:
+	for pull in game:
 		for k, v in pull.items():
 			if v > max_vals[k]:
-				valid = False
-				break
-	if valid:
-		total += i + 1
-print(total)
+				return False
+	return True
+
+
+cwd = os.path.dirname(os.path.abspath(__file__))
+with open(f"{cwd}/input.txt") as f:
+	data = [[create_dict(pull) for pull in l.split(": ")[1].split("; ")] for l in f.read().splitlines()]
+
+print(sum([i + 1 for i, g in enumerate(data) if is_valid(g)]))
