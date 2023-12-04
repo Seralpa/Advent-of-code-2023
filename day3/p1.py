@@ -14,31 +14,24 @@ with open(f"{cwd}/input.txt") as f:
 	data = f.read().splitlines()
 
 total = 0
-for i, l in enumerate(data):
-	l_iter = iter(enumerate(l))
-	for j, c in l_iter:
+for i, line in enumerate(data):
+	line_iter = iter(enumerate(line))
+	for j, c in line_iter:
 		if c.isdigit():
 			# calculate lenght of num
-			match = not_digit.search(l[j:])
-			n_len = match.start() if match else len(l)
+			match = not_digit.search(line[j:])
+			n_len = match.start() if match else len(line)
 
-			# check if there is a symbol around
-			n_pre = j - 1 if j > 0 else j
-			n_post = j + n_len + 1 if match else j + n_len
-			if i > 0:
-				n = data[i - 1][n_pre:n_post]
-			else:
-				n = []
-			if i < len(data) - 1:
-				s = data[i + 1][n_pre:n_post]
-			else:
-				s = []
-			w = l[j - 1] if j > 0 else "."
-			e = l[j + n_len] if match else "."
+			# get all chars around the part
+			i2_start = i - 1 if i > 0 else i
+			i2_end = i + 2 if i < len(data) - 1 else i + 1
+			j2_start = j - 1 if j > 0 else j
+			j2_end = j + 2 if i < len(line) - 1 else j + 1
+			around = (data[i2][j2_start:j2_end] for i2 in range(i2_start, i2_end))
 
-			if any(is_symbol(x) for x in itt.chain(n, s, (w, e))):
-				total += int(l[j:j + n_len])
+			if any(is_symbol(x) for x in around):
+				total += int(line[j:j + n_len])
 
 			# skip the rest of num
-			next(itt.islice(l_iter, n_len - 1, None), '')
+			next(itt.islice(line_iter, n_len - 1, None), '')
 print(total)
