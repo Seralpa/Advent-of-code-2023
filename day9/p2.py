@@ -6,11 +6,10 @@ with open(f"{cwd}/input.txt") as f:
 
 total = 0
 for l in data:
-	l_aux = l[:]
 	first_digits = []
-	while any(l_aux):
-		first_digits.append(l_aux[0])
-		l_aux = [n2 - n1 for n1, n2 in zip(l_aux, l_aux[1:])]
+	while any(l):
+		first_digits.append(l[0])
+		l = [n2 - n1 for n1, n2 in zip(l, l[1:])]
 	ext = 0
 	for d in reversed(first_digits):
 		ext = d - ext

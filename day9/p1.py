@@ -6,8 +6,7 @@ with open(f"{cwd}/input.txt") as f:
 
 total = 0
 for l in data:
-	l_aux = l[:]
-	while any(l_aux):
-		total += l_aux[-1]
-		l_aux = [n2 - n1 for n1, n2 in zip(l_aux, l_aux[1:])]
+	while any(l):
+		total += l[-1]
+		l = [n2 - n1 for n1, n2 in zip(l, l[1:])]
 print(total)
