@@ -26,9 +26,10 @@ for i, l in enumerate(data):
 			start = (i, j)
 loop = nx.node_connected_component(g, start)
 g.remove_nodes_from(set(g) - loop)
+
 g2 = nx.Graph()
-for i, l in enumerate(data):
-	for j, c in enumerate(l):
+for i in range(-1, len(data) + 1):
+	for j in range(-1, len(data[0]) + 1):
 		i5, j5 = i + .5, j + .5
 		if not g.has_edge((i, j), (i, j + 1)):
 			g2.add_edge((i5, j5), (i5 - 1, j5))
@@ -41,10 +42,5 @@ for i, l in enumerate(data):
 		if (i, j) not in loop:
 			g2.add_edge((i, j), (i5, j5))
 
-out_node = (0, 0)
-if out_node in loop:
-	print(f"Node {out_node} is part of the main loop, change it to any node outside the main loop")
-	exit()
-
-inner_nodes = (set(g2.nodes) - nx.node_connected_component(g2, out_node))
+inner_nodes = (set(g2.nodes) - nx.node_connected_component(g2, (-1, -1)))
 print(len([(i, j) for i, j in inner_nodes if type(i) == int and type(j) == int]))
