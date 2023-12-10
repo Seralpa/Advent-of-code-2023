@@ -41,9 +41,10 @@ for i, l in enumerate(data):
 		if (i, j) not in loop:
 			g2.add_edge((i, j), (i5, j5))
 
-if (0, 0) in loop:
-	print("PANIC")
+out_node = (0, 0)
+if out_node in loop:
+	print(f"Node {out_node} is part of the main loop, change it to any node outside the main loop")
 	exit()
 
-inner_nodes = (set(g2.nodes) - nx.node_connected_component(g2, (0, 0)))
+inner_nodes = (set(g2.nodes) - nx.node_connected_component(g2, out_node))
 print(len([(i, j) for i, j in inner_nodes if type(i) == int and type(j) == int]))
